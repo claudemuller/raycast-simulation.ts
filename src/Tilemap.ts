@@ -29,9 +29,17 @@ export class Tilemap {
   }
 
 	public isWallAt(x: number, y: number): boolean {
+    if (
+      (x < 0 || x >= this.numCols * this.tileSize)
+      || (y < 0 || y >= this.numRows * this.tileSize)
+    ) {
+      return true
+    }
+
     const col: number = Math.floor(x / this.tileSize)
     const row: number = Math.floor(y / this.tileSize)
-		return this.grid[row][col] == 1
+
+		return this.grid[row][col] != 0
 	}
 
   public render(): void {
