@@ -2,11 +2,11 @@ import P5 from "p5"
 
 export class Tilemap {
   public grid: Array<Array<number>>
+  public tileSize: number
+	public numRows: number
+	public numCols: number
 
   private renderer: P5
-  private tileSize: number
-	private numRows: number
-	private numCols: number
 
   public constructor(renderer: P5, tileSize: number, numRows: number, numCols: number) {
     this.renderer = renderer

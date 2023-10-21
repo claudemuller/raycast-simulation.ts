@@ -11,7 +11,7 @@ const WINDOW_HEIGHT: number = MAP_NUM_ROWS * TILE_SIZE
 
 const FOV_ANGLE: number = 60 * Math.PI / 180
 
-const WALL_STRIP_WIDTH: number = 4
+const WALL_STRIP_WIDTH: number = 3
 const NUM_RAYS: number = WINDOW_WIDTH / WALL_STRIP_WIDTH
 
 const K_W: number = 87
@@ -31,6 +31,7 @@ const game = (p5: P5): void => {
     
     for (let i: number = 0; i < NUM_RAYS; i++) {
       let ray: Ray = new Ray(p5, player.x, player.y, rayAngle)
+      ray.cast(columnId, grid)
       rays.push(ray)
       rayAngle += FOV_ANGLE / NUM_RAYS
       columnId++
@@ -39,7 +40,7 @@ const game = (p5: P5): void => {
 
   const update: () => void = (): void => {
     player.update(grid)
-    castAllRays()
+    // castAllRays()
   }
 
   p5.setup = (): void => {
@@ -74,11 +75,13 @@ const game = (p5: P5): void => {
     update()
 
     grid.render()
-    player.render()
 
     for (const ray of rays) {
       ray.render()
     }
+
+    player.render()
+    castAllRays()
   }
 }
 

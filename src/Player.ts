@@ -36,12 +36,12 @@ export class Player {
 		this.renderer.noStroke()
     this.renderer.fill("red")
     this.renderer.circle(this.x, this.y, this.rad)
-    this.renderer.stroke("red")
-		this.renderer.line(
-			this.x,
-			this.y,
-			this.x + Math.cos(this.rotationAngle) * 30,
-			this.y + Math.sin(this.rotationAngle) * 30,
-		)
+  //   this.renderer.stroke("red")
+		// this.renderer.line(
+		// 	this.x,
+		// 	this.y,
+		// 	this.x + Math.cos(this.rotationAngle) * 30,
+		// 	this.y + Math.sin(this.rotationAngle) * 30,
+		// )
 	}
 }
