@@ -2,6 +2,8 @@
 
 A Raycasting game based off of Wolfenstein 3D written in TypeScript.
 
+![Vargenssten3d](vargenssten3d.png)
+
 # Building
 
 ```bash
