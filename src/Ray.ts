@@ -7,6 +7,7 @@ export class Ray {
   public wasHitVertical: boolean = false
 	public wallHitX: number = 0
 	public wallHitY: number = 0
+	public wallHitColour: number = 0
 
 	private renderer: P5
 	private originX: number
@@ -48,15 +49,21 @@ export class Ray {
 		let foundHorzWallHit: boolean = false
 		let horzWallHitX: number = 0
 		let horzWallHitY: number = 0
+		let horzWallHitColour: number = 0
 		
 		while ( 
-      (nextHorzTouchX >= 0 || nextHorzTouchX <= tilemap.numCols * tilemap.tileSize)
-      || (nextHorzTouchY >= 0 || nextHorzTouchY <= tilemap.numRows * tilemap.tileSize)
+      nextHorzTouchX >= 0 && nextHorzTouchX <= tilemap.numCols * tilemap.tileSize
+      && nextHorzTouchY >= 0 && nextHorzTouchY <= tilemap.numRows * tilemap.tileSize
 		) {
-			if (tilemap.isWallAt(nextHorzTouchX, nextHorzTouchY - (this.isRayFacingUp ? 1 : 0))) {
+      const wallGridContent: number = tilemap.getWallContentAt(
+          nextHorzTouchX,
+          nextHorzTouchY + (this.isRayFacingUp ? -1 : 0),
+      );
+      if (wallGridContent != 0) {
 				foundHorzWallHit = true
 				horzWallHitX = nextHorzTouchX
 				horzWallHitY = nextHorzTouchY
+				horzWallHitColour = wallGridContent
 				break
 			}
 
@@ -79,19 +86,24 @@ export class Ray {
 
     let nextVertTouchX: number = xIntercept
     let nextVertTouchY: number = yIntercept
-
 		let foundVertWallHit: boolean = false
     let vertWallHitX: number = 0
     let vertWallHitY: number = 0
+		let vertWallHitColour: number = 0
 
     while (
-      (nextHorzTouchX >= 0 || nextHorzTouchX <= tilemap.numCols * tilemap.tileSize)
-      || (nextHorzTouchY >= 0 || nextHorzTouchY <= tilemap.numRows * tilemap.tileSize)
+      nextVertTouchX >= 0 && nextVertTouchX <= tilemap.numCols * tilemap.tileSize
+      && nextVertTouchY >= 0 && nextVertTouchY <= tilemap.numRows * tilemap.tileSize
 		) {
-      if (tilemap.isWallAt(nextVertTouchX - (this.isRayFacingLeft ? 1 : 0), nextVertTouchY)) {
+			const wallGridContent: number = tilemap.getWallContentAt(
+          nextVertTouchX + (this.isRayFacingLeft ? -1 : 0),
+          nextVertTouchY,
+      );
+      if (wallGridContent != 0) {
         foundVertWallHit = true
         vertWallHitX = nextVertTouchX
         vertWallHitY = nextVertTouchY
+				vertWallHitColour = wallGridContent
         break
 			}
 
@@ -111,6 +123,7 @@ export class Ray {
 			this.wallHitY = vertWallHitY
 			this.distance = vertHitDistance
 	    this.wasHitVertical = true
+			this.wallHitColour = vertWallHitColour
 			return
 		}
 
@@ -118,6 +131,7 @@ export class Ray {
     this.wallHitY = horzWallHitY
     this.distance = horzHitDistance
     this.wasHitVertical = false
+		this.wallHitColour = horzWallHitColour
 	}
 
 	public render(): void {

@@ -50,16 +50,16 @@ const game = (p5: P5): void => {
       const distanceProjectionPlane: number = WINDOW_WIDTH / 2 / Math.tan(FOV_ANGLE / 2)
       const wallStripHeight: number = TILE_SIZE / correctedWallDistance * distanceProjectionPlane
 
-      let alpha: number = 170 / correctedWallDistance
-      alpha = rays[i].wasHitVertical ? 0.95 : alpha;
+      let alpha: number = 1.0
+      let brightness: number = wallStripHeight / WINDOW_HEIGHT
+      brightness = rays[i].wasHitVertical ? Math.max(brightness, 0.85) : brightness
 
-      // const brightness: number = rays[i].wasHitVertical ? 1.0 : 0.9;
-      // const [r, g, b]: number[] = getColour(grid.getWallAt(rays[i].wallHitX, rays[i].wallHitY))
-      const adjustedR: number = 255; //Math.min(255, Math.max(0, r * brightness))
-      const adjustedG: number = 255; //Math.min(255, Math.max(0, g * brightness))
-      const adjustedB: number = 255; //Math.min(255, Math.max(0, b * brightness))
+      let [r, g, b]: number[] = getColour(rays[i].wallHitColour)
+      r = Math.min(255, Math.max(0, Math.floor(r * brightness)))
+      g = Math.min(255, Math.max(0, Math.floor(g * brightness)))
+      b = Math.min(255, Math.max(0, Math.floor(b * brightness)))
  
-      p5.fill(`rgba(${adjustedR}, ${adjustedG}, ${adjustedB}, ${alpha})`)
+      p5.fill(`rgba(${r}, ${g}, ${b}, ${alpha})`)
       p5.noStroke()
       p5.rect(
         i * WALL_STRIP_WIDTH,

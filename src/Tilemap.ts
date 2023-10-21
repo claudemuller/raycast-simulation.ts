@@ -18,19 +18,26 @@ export class Tilemap {
     this.grid = [
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
       [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
-      [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1],
-      [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1],
+      [1, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+      [1, 3, 3, 3, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1],
       [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1],
       [1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1],
       [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
       [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-      [1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1],
+      [1, 2, 2, 2, 2, 2, 0, 0, 0, 3, 3, 3, 3, 0, 1],
       [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     ]
   }
 
-	public getWallAt(x: number, y: number): number {
+	public getWallContentAt(x: number, y: number): number {
+    if (
+      x < 0 || x > this.numCols * this.tileSize
+      || y < 0 || y > this.numRows * this.tileSize
+    ) {
+      return 0
+    }
+
     const col: number = Math.floor(x / this.tileSize)
     const row: number = Math.floor(y / this.tileSize)
 
@@ -39,13 +46,16 @@ export class Tilemap {
 
 	public isWallAt(x: number, y: number): boolean {
     if (
-      (x < 0 || x >= this.numCols * this.tileSize)
-      || (y < 0 || y >= this.numRows * this.tileSize)
+      x < 0 || x > this.numCols * this.tileSize
+      || y < 0 || y > this.numRows * this.tileSize
     ) {
       return true
     }
 
-    return this.getWallAt(x, y) != 0
+    const col: number = Math.floor(x / this.tileSize)
+    const row: number = Math.floor(y / this.tileSize)
+
+		return this.grid[row][col] != 0
 	}
 
   public render(): void {
@@ -53,7 +63,8 @@ export class Tilemap {
       for (let j: number = 0; j < this.numCols; j++) {
         const tileX: number = j * this.tileSize
         const tileY: number = i * this.tileSize
-        const [r, g, b]: number[] = getColour(this.grid[i][j])
+        // const [r, g, b]: number[] = getColour(this.grid[i][j])
+        const [r, g, b]: number[] = this.grid[i][j] != 0 ? [80, 80, 80] : [255, 255, 255]
 
         this.renderer.stroke("#222")
         this.renderer.fill(r, g, b)
@@ -73,7 +84,7 @@ export const getColour: (col: number) => number[] = (col: number): number[] => {
     case 0: // White
       return [255, 255, 255]
     case 1: // Red
-      return [70, 70, 70]
+      return [255, 0, 0]
     case 2: // Green
       return [0, 255, 0]
     case 3: // Blue
