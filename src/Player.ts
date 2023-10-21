@@ -4,12 +4,12 @@ import { Tilemap } from './Tilemap'
 export class Player {
 	public turnDirection: number = 0 // -1 for left; +1 for right
 	public walkDirection: number = 0 // -1 for back; +1 for front
+  public rotationAngle: number = Math.PI / 2
+	public x: number
+	public y: number
 
 	private renderer: P5
-	private x: number
-	private y: number
 	private rad: number = 3
-	private rotationAngle: number = Math.PI / 2
 	private moveSpeed: number = 2.0
 	private rotationSpeed: number = 2 * Math.PI / 180
 	
