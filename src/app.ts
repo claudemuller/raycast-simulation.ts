@@ -1,5 +1,5 @@
 import P5 from "p5"
-import { Tilemap } from "./Tilemap"
+import { Tilemap, getColour } from "./Tilemap"
 import { Player } from "./Player"
 import { Ray } from "./Ray"
 
@@ -37,7 +37,7 @@ const game = (p5: P5): void => {
     rays.length = 0
     
     for (let col: number = 0; col < NUM_RAYS; col++) {
-      let ray: Ray = new Ray(p5, player.x, player.y, rayAngle, MINIMAP_SCALE_FACTOR)
+      const ray: Ray = new Ray(p5, player.x, player.y, rayAngle, MINIMAP_SCALE_FACTOR)
       ray.cast(grid)
       rays.push(ray)
       rayAngle += FOV_ANGLE / NUM_RAYS
@@ -49,10 +49,17 @@ const game = (p5: P5): void => {
       const correctedWallDistance: number = rays[i].distance * Math.cos(rays[i].rayAngle - player.rotationAngle)
       const distanceProjectionPlane: number = WINDOW_WIDTH / 2 / Math.tan(FOV_ANGLE / 2)
       const wallStripHeight: number = TILE_SIZE / correctedWallDistance * distanceProjectionPlane
-      const alpha: number = 1.0 //170 / correctedWallDistance
-      const colour: number = rays[i].wasHitVertical ? 255 : 180;
+
+      let alpha: number = 170 / correctedWallDistance
+      alpha = rays[i].wasHitVertical ? 0.95 : alpha;
+
+      // const brightness: number = rays[i].wasHitVertical ? 1.0 : 0.9;
+      // const [r, g, b]: number[] = getColour(grid.getWallAt(rays[i].wallHitX, rays[i].wallHitY))
+      const adjustedR: number = 255; //Math.min(255, Math.max(0, r * brightness))
+      const adjustedG: number = 255; //Math.min(255, Math.max(0, g * brightness))
+      const adjustedB: number = 255; //Math.min(255, Math.max(0, b * brightness))
  
-      p5.fill(`rgba(${colour}, ${colour}, ${colour}, ${alpha})`)
+      p5.fill(`rgba(${adjustedR}, ${adjustedG}, ${adjustedB}, ${alpha})`)
       p5.noStroke()
       p5.rect(
         i * WALL_STRIP_WIDTH,

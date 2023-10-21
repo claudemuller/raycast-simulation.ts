@@ -5,12 +5,12 @@ export class Ray {
   public distance: number = 0
   public rayAngle: number
   public wasHitVertical: boolean = false
+	public wallHitX: number = 0
+	public wallHitY: number = 0
 
 	private renderer: P5
 	private originX: number
 	private originY: number
-	private wallHitX: number = 0
-	private wallHitY: number = 0
 	private isRayFacingDown: boolean
 	private isRayFacingUp: boolean
 	private isRayFacingRight: boolean
@@ -121,7 +121,7 @@ export class Ray {
 	}
 
 	public render(): void {
-		this.renderer.stroke("rgba(255, 0, 0, 0.3)")
+		this.renderer.stroke("rgba(255, 0, 0, 0.05)")
 		this.renderer.line(
 			this.originX * this.scaleFactor,
 			this.originY * this.scaleFactor,
