@@ -48,9 +48,9 @@ const game = (p5: P5): void => {
 
   const renderProjectedWalls: () => void = (): void => {
     for (let i: number = 0; i < NUM_RAYS; i++) {
-      let rayDistance: number = rays[i].distance
+      let correctedWallDistance: number = rays[i].distance * Math.cos(rays[i].rayAngle - player.rotationAngle)
       let distanceProjectionPlane: number = WINDOW_WIDTH / 2 / Math.tan(FOV_ANGLE / 2)
-      let wallStripHeight: number = (TILE_SIZE / rayDistance) * distanceProjectionPlane
+      let wallStripHeight: number = (TILE_SIZE / correctedWallDistance) * distanceProjectionPlane
 
       p5.fill("rgba(255, 255, 255, 1.0)")
       p5.noStroke()
@@ -97,9 +97,9 @@ const game = (p5: P5): void => {
   }
 
   p5.draw = (): void => {
-    p5.clear(21, 21, 21, 1.0)
     update()
 
+    p5.clear(21, 21, 21, 1.0)
     renderProjectedWalls()
     
     grid.render()

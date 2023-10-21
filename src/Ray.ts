@@ -3,9 +3,9 @@ import { Tilemap } from "./Tilemap"
 
 export class Ray {
   public distance: number = 0
+  public rayAngle: number
 
 	private renderer: P5
-	private rayAngle: number
 	private originX: number
 	private originY: number
 	private wallHitX: number = 0
