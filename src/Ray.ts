@@ -2,13 +2,14 @@ import P5 from "p5"
 import { Tilemap } from "./Tilemap"
 
 export class Ray {
+  public distance: number = 0
+
 	private renderer: P5
 	private rayAngle: number
 	private originX: number
 	private originY: number
 	private wallHitX: number = 0
 	private wallHitY: number = 0
-	private distance: number = 0
 	private wasHitVertical: boolean = false
 	private isRayFacingDown: boolean
 	private isRayFacingUp: boolean

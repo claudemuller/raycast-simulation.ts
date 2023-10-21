@@ -46,9 +46,26 @@ const game = (p5: P5): void => {
     }
   }
 
+  const renderProjectedWalls: () => void = (): void => {
+    for (let i: number = 0; i < NUM_RAYS; i++) {
+      let rayDistance: number = rays[i].distance
+      let distanceProjectionPlane: number = WINDOW_WIDTH / 2 / Math.tan(FOV_ANGLE / 2)
+      let wallStripHeight: number = (TILE_SIZE / rayDistance) * distanceProjectionPlane
+
+      p5.fill("rgba(255, 255, 255, 1.0)")
+      p5.noStroke()
+      p5.rect(
+        i * WALL_STRIP_WIDTH,
+        WINDOW_HEIGHT / 2 - wallStripHeight / 2,        
+        WALL_STRIP_WIDTH,
+        wallStripHeight,
+      )
+    }
+  }
+
   const update: () => void = (): void => {
     player.update(grid)
-    // castAllRays()
+    castAllRays()
   }
 
   p5.setup = (): void => {
@@ -80,8 +97,11 @@ const game = (p5: P5): void => {
   }
 
   p5.draw = (): void => {
+    p5.clear(21, 21, 21, 1.0)
     update()
 
+    renderProjectedWalls()
+    
     grid.render()
 
     for (const ray of rays) {
@@ -89,7 +109,6 @@ const game = (p5: P5): void => {
     }
 
     player.render()
-    castAllRays()
   }
 }
 
