@@ -11,7 +11,7 @@ const WINDOW_HEIGHT: number = MAP_NUM_ROWS * TILE_SIZE
 
 const FOV_ANGLE: number = 60 * Math.PI / 180
 
-const WALL_STRIP_WIDTH: number = 3
+const WALL_STRIP_WIDTH: number = 1
 const NUM_RAYS: number = WINDOW_WIDTH / WALL_STRIP_WIDTH
 
 const K_W: number = 87

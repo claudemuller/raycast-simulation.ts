@@ -42,11 +42,6 @@ export class Ray {
 
 		let nextHorzTouchX: number = xIntercept
 		let nextHorzTouchY: number = yIntercept
-
-		if (this.isRayFacingUp) {
-			nextHorzTouchY--
-		}
-
 		let foundHorzWallHit: boolean = false
 		let horzWallHitX: number = 0
 		let horzWallHitY: number = 0
@@ -55,7 +50,7 @@ export class Ray {
       (nextHorzTouchX >= 0 || nextHorzTouchX <= tilemap.numCols * tilemap.tileSize)
       || (nextHorzTouchY >= 0 || nextHorzTouchY <= tilemap.numRows * tilemap.tileSize)
 		) {
-			if (tilemap.isWallAt(nextHorzTouchX, nextHorzTouchY)) {
+			if (tilemap.isWallAt(nextHorzTouchX, nextHorzTouchY - (this.isRayFacingUp ? 1 : 0))) {
 				foundHorzWallHit = true
 				horzWallHitX = nextHorzTouchX
 				horzWallHitY = nextHorzTouchY
@@ -82,10 +77,6 @@ export class Ray {
     let nextVertTouchX: number = xIntercept;
     let nextVertTouchY: number = yIntercept;
 
-    if (this.isRayFacingLeft) {
-      nextVertTouchX--;
-		}
-
 		let foundVertWallHit: boolean = false;
     let vertWallHitX: number = 0;
     let vertWallHitY: number = 0;
@@ -94,7 +85,7 @@ export class Ray {
       (nextHorzTouchX >= 0 || nextHorzTouchX <= tilemap.numCols * tilemap.tileSize)
       || (nextHorzTouchY >= 0 || nextHorzTouchY <= tilemap.numRows * tilemap.tileSize)
 		) {
-      if (tilemap.isWallAt(nextVertTouchX, nextVertTouchY)) {
+      if (tilemap.isWallAt(nextVertTouchX - (this.isRayFacingLeft ? 1 : 0), nextVertTouchY)) {
         foundVertWallHit = true;
         vertWallHitX = nextVertTouchX;
         vertWallHitY = nextVertTouchY;
