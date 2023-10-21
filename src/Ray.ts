@@ -4,13 +4,13 @@ import { Tilemap } from "./Tilemap"
 export class Ray {
   public distance: number = 0
   public rayAngle: number
+  public wasHitVertical: boolean = false
 
 	private renderer: P5
 	private originX: number
 	private originY: number
 	private wallHitX: number = 0
 	private wallHitY: number = 0
-	private wasHitVertical: boolean = false
 	private isRayFacingDown: boolean
 	private isRayFacingUp: boolean
 	private isRayFacingRight: boolean
@@ -29,7 +29,7 @@ export class Ray {
 		this.scaleFactor = scaleFactor
 	}
 
-	public cast(columnId: number, tilemap: Tilemap): void {
+	public cast(tilemap: Tilemap): void {
 		// Horizontal intercept
 		let yIntercept: number = Math.floor(this.originY / tilemap.tileSize) * tilemap.tileSize
 		yIntercept += this.isRayFacingDown ? tilemap.tileSize : 0
@@ -65,51 +65,59 @@ export class Ray {
 		}
 
 		// Vertical intercept
-    xIntercept = Math.floor(this.originX / tilemap.tileSize) * tilemap.tileSize;
-    xIntercept += this.isRayFacingRight ? tilemap.tileSize : 0;
+    xIntercept = Math.floor(this.originX / tilemap.tileSize) * tilemap.tileSize
+    xIntercept += this.isRayFacingRight ? tilemap.tileSize : 0
 
-    yIntercept = this.originY + (xIntercept - this.originX) * Math.tan(this.rayAngle);
+    yIntercept = this.originY + (xIntercept - this.originX) * Math.tan(this.rayAngle)
 
-    xStep = tilemap.tileSize;
-    xStep *= this.isRayFacingLeft ? -1 : 1;
+    xStep = tilemap.tileSize
+    xStep *= this.isRayFacingLeft ? -1 : 1
 
-    yStep = tilemap.tileSize * Math.tan(this.rayAngle);
-    yStep *= this.isRayFacingUp && yStep > 0 ? -1 : 1;
-    yStep *= this.isRayFacingDown && yStep < 0 ? -1 : 1;
+    yStep = tilemap.tileSize * Math.tan(this.rayAngle)
+    yStep *= this.isRayFacingUp && yStep > 0 ? -1 : 1
+    yStep *= this.isRayFacingDown && yStep < 0 ? -1 : 1
 
-    let nextVertTouchX: number = xIntercept;
-    let nextVertTouchY: number = yIntercept;
+    let nextVertTouchX: number = xIntercept
+    let nextVertTouchY: number = yIntercept
 
-		let foundVertWallHit: boolean = false;
-    let vertWallHitX: number = 0;
-    let vertWallHitY: number = 0;
+		let foundVertWallHit: boolean = false
+    let vertWallHitX: number = 0
+    let vertWallHitY: number = 0
 
     while (
       (nextHorzTouchX >= 0 || nextHorzTouchX <= tilemap.numCols * tilemap.tileSize)
       || (nextHorzTouchY >= 0 || nextHorzTouchY <= tilemap.numRows * tilemap.tileSize)
 		) {
       if (tilemap.isWallAt(nextVertTouchX - (this.isRayFacingLeft ? 1 : 0), nextVertTouchY)) {
-        foundVertWallHit = true;
-        vertWallHitX = nextVertTouchX;
-        vertWallHitY = nextVertTouchY;
-        break;
+        foundVertWallHit = true
+        vertWallHitX = nextVertTouchX
+        vertWallHitY = nextVertTouchY
+        break
 			}
 
-      nextVertTouchX += xStep;
-      nextVertTouchY += yStep;
+      nextVertTouchX += xStep
+      nextVertTouchY += yStep
     }
 
     let horzHitDistance: number = foundHorzWallHit
         ? distanceBetweenPoints(this.originX, this.originY, horzWallHitX, horzWallHitY)
-        : Number.MAX_VALUE;
+        : Number.MAX_VALUE
     let vertHitDistance: number = foundVertWallHit
         ? distanceBetweenPoints(this.originX, this.originY, vertWallHitX, vertWallHitY)
-        : Number.MAX_VALUE;
+        : Number.MAX_VALUE
 
-    this.wallHitX = horzHitDistance < vertHitDistance ? horzWallHitX : vertWallHitX;
-    this.wallHitY = horzHitDistance < vertHitDistance ? horzWallHitY : vertWallHitY;
-    this.distance = horzHitDistance < vertHitDistance ? horzHitDistance : vertHitDistance;
-    this.wasHitVertical = vertHitDistance < horzHitDistance;
+		if (vertHitDistance < horzHitDistance) {
+			this.wallHitX = vertWallHitX
+			this.wallHitY = vertWallHitY
+			this.distance = vertHitDistance
+	    this.wasHitVertical = true
+			return
+		}
+
+    this.wallHitX = horzWallHitX
+    this.wallHitY = horzWallHitY
+    this.distance = horzHitDistance
+    this.wasHitVertical = false
 	}
 
 	public render(): void {

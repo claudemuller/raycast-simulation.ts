@@ -33,16 +33,14 @@ const game = (p5: P5): void => {
   let rays: Array<Ray> = []
 
   const castAllRays: () => void = (): void => {
-    let columnId: number = 0
     let rayAngle: number = player.rotationAngle - (FOV_ANGLE / 2)
     rays.length = 0
     
-    for (let i: number = 0; i < NUM_RAYS; i++) {
+    for (let col: number = 0; col < NUM_RAYS; col++) {
       let ray: Ray = new Ray(p5, player.x, player.y, rayAngle, MINIMAP_SCALE_FACTOR)
-      ray.cast(columnId, grid)
+      ray.cast(grid)
       rays.push(ray)
       rayAngle += FOV_ANGLE / NUM_RAYS
-      columnId++
     }
   }
 
@@ -51,9 +49,10 @@ const game = (p5: P5): void => {
       const correctedWallDistance: number = rays[i].distance * Math.cos(rays[i].rayAngle - player.rotationAngle)
       const distanceProjectionPlane: number = WINDOW_WIDTH / 2 / Math.tan(FOV_ANGLE / 2)
       const wallStripHeight: number = TILE_SIZE / correctedWallDistance * distanceProjectionPlane
-      const alpha: number = 170 / correctedWallDistance
+      const alpha: number = 1.0 //170 / correctedWallDistance
+      const colour: number = rays[i].wasHitVertical ? 255 : 180;
  
-      p5.fill(`rgba(255, 255, 255, ${alpha})`)
+      p5.fill(`rgba(${colour}, ${colour}, ${colour}, ${alpha})`)
       p5.noStroke()
       p5.rect(
         i * WALL_STRIP_WIDTH,
