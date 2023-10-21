@@ -3,7 +3,7 @@ import { Tilemap } from "./Tilemap"
 import { Player } from "./Player"
 import { Ray } from "./Ray"
 
-const TILE_SIZE = 32
+const TILE_SIZE = 64
 const MAP_NUM_ROWS = 11
 const MAP_NUM_COLS = 15
 const WINDOW_WIDTH: number = MAP_NUM_COLS * TILE_SIZE
@@ -11,8 +11,10 @@ const WINDOW_HEIGHT: number = MAP_NUM_ROWS * TILE_SIZE
 
 const FOV_ANGLE: number = 60 * Math.PI / 180
 
-const WALL_STRIP_WIDTH: number = 1
+const WALL_STRIP_WIDTH = 1
 const NUM_RAYS: number = WINDOW_WIDTH / WALL_STRIP_WIDTH
+
+const MINIMAP_SCALE_FACTOR = 0.2
 
 const K_W: number = 87
 const K_S: number = 83
@@ -20,8 +22,14 @@ const K_A: number = 65
 const K_D: number = 68
   
 const game = (p5: P5): void => {
-  let grid: Tilemap = new Tilemap(p5, TILE_SIZE, MAP_NUM_ROWS, MAP_NUM_COLS)
-  let player: Player = new Player(p5, WINDOW_WIDTH/2, WINDOW_HEIGHT/2)
+  let grid: Tilemap = new Tilemap(
+    p5,
+    TILE_SIZE,
+    MAP_NUM_ROWS,
+    MAP_NUM_COLS,
+    MINIMAP_SCALE_FACTOR,
+  )
+  let player: Player = new Player(p5, WINDOW_WIDTH/2, WINDOW_HEIGHT/2, MINIMAP_SCALE_FACTOR)
   let rays: Array<Ray> = []
 
   const castAllRays: () => void = (): void => {
@@ -30,7 +38,7 @@ const game = (p5: P5): void => {
     rays.length = 0
     
     for (let i: number = 0; i < NUM_RAYS; i++) {
-      let ray: Ray = new Ray(p5, player.x, player.y, rayAngle)
+      let ray: Ray = new Ray(p5, player.x, player.y, rayAngle, MINIMAP_SCALE_FACTOR)
       ray.cast(columnId, grid)
       rays.push(ray)
       rayAngle += FOV_ANGLE / NUM_RAYS

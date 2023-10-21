@@ -12,11 +12,13 @@ export class Player {
 	private rad: number = 3
 	private moveSpeed: number = 2.0
 	private rotationSpeed: number = 2 * Math.PI / 180
+	private scaleFactor: number
 	
-	public constructor(renderer: P5, initX: number = 10, initY: number = 10) {
+	public constructor(renderer: P5, initX: number = 10, initY: number = 10, scaleFactor: number) {
 		this.renderer = renderer
 		this.x = initX
 		this.y = initY
+		this.scaleFactor = scaleFactor
 	}
 
 	public update(grid: Tilemap): void {
@@ -34,14 +36,18 @@ export class Player {
 
 	public render(): void {
 		this.renderer.noStroke()
-    this.renderer.fill("red")
-    this.renderer.circle(this.x, this.y, this.rad)
-  //   this.renderer.stroke("red")
-		// this.renderer.line(
-		// 	this.x,
-		// 	this.y,
-		// 	this.x + Math.cos(this.rotationAngle) * 30,
-		// 	this.y + Math.sin(this.rotationAngle) * 30,
-		// )
+    this.renderer.fill("blue")
+    this.renderer.circle(
+			this.x * this.scaleFactor,
+			 this.y * this.scaleFactor,
+			 this.rad * this.scaleFactor,
+		)
+    this.renderer.stroke("blue")
+		this.renderer.line(
+			this.x * this.scaleFactor,
+			this.y * this.scaleFactor,
+			(this.x + Math.cos(this.rotationAngle) * 30) * this.scaleFactor,
+			(this.y + Math.sin(this.rotationAngle) * 30) * this.scaleFactor,
+		)
 	}
 }

@@ -7,9 +7,11 @@ export class Tilemap {
 	public numCols: number
 
   private renderer: P5
+  private scaleFactor: number
 
-  public constructor(renderer: P5, tileSize: number, numRows: number, numCols: number) {
+  public constructor(renderer: P5, tileSize: number, numRows: number, numCols: number, scaleFactor: number) {
     this.renderer = renderer
+    this.scaleFactor = scaleFactor
 		this.tileSize = tileSize
 		this.numRows = numRows
 		this.numCols = numCols
@@ -51,7 +53,12 @@ export class Tilemap {
 
           this.renderer.stroke("#222")
           this.renderer.fill(tileColour)
-          this.renderer.rect(tileX, tileY, this.tileSize, this.tileSize)
+          this.renderer.rect(
+            tileX * this.scaleFactor,
+            tileY * this.scaleFactor,
+            this.tileSize * this.scaleFactor,
+            this.tileSize * this.scaleFactor,
+        )
       }
     }
   }

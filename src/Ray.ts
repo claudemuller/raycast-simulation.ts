@@ -14,8 +14,9 @@ export class Ray {
 	private isRayFacingUp: boolean
 	private isRayFacingRight: boolean
 	private isRayFacingLeft: boolean
-	
-	public constructor(renderer: P5, origX: number, origY: number, rayAngle: number) {
+	private scaleFactor: number	
+
+	public constructor(renderer: P5, origX: number, origY: number, rayAngle: number, scaleFactor: number) {
 		this.renderer = renderer
 		this.rayAngle = normaliseAngle(rayAngle)
 		this.originX = origX
@@ -24,6 +25,7 @@ export class Ray {
 		this.isRayFacingUp = !this.isRayFacingDown
 		this.isRayFacingRight = this.rayAngle < 0.5 * Math.PI || this.rayAngle > 1.5 * Math.PI
 		this.isRayFacingLeft = !this.isRayFacingRight
+		this.scaleFactor = scaleFactor
 	}
 
 	public cast(columnId: number, tilemap: Tilemap): void {
@@ -112,10 +114,10 @@ export class Ray {
 	public render(): void {
 		this.renderer.stroke("rgba(255, 0, 0, 0.3)")
 		this.renderer.line(
-			this.originX,
-			this.originY,
-			this.wallHitX,
-			this.wallHitY,
+			this.originX * this.scaleFactor,
+			this.originY * this.scaleFactor,
+			this.wallHitX * this.scaleFactor,
+			this.wallHitY * this.scaleFactor,
 		)
 	}
 }
