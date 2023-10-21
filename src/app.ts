@@ -51,9 +51,9 @@ const game = (p5: P5): void => {
       const correctedWallDistance: number = rays[i].distance * Math.cos(rays[i].rayAngle - player.rotationAngle)
       const distanceProjectionPlane: number = WINDOW_WIDTH / 2 / Math.tan(FOV_ANGLE / 2)
       const wallStripHeight: number = TILE_SIZE / correctedWallDistance * distanceProjectionPlane
-      const opacity: number = wallStripHeight / WINDOW_HEIGHT
-
-      p5.fill(`rgba(255, 255, 255, ${opacity})`)
+      const alpha: number = 170 / correctedWallDistance
+ 
+      p5.fill(`rgba(255, 255, 255, ${alpha})`)
       p5.noStroke()
       p5.rect(
         i * WALL_STRIP_WIDTH,
