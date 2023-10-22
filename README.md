@@ -1,10 +1,16 @@
 # Raycast Simualtion
 
-A Raycasting simulation written in TypeScript with [p5.js](https://p5js.org/).
+A [Ray casting](https://en.wikipedia.org/wiki/Ray_casting) simulation written in TypeScript with [p5.js](https://p5js.org/).
 
 ![Raycast](screenshot.png)
 
-# Installing Dependencies
+## Requirements
+
+- [node](https://nodejs.org/en)
+- [yarn](https://yarnpkg.com/)
+- or [npm](https://www.npmjs.com/)
+
+## Installing Dependencies
 
 ```bash
 yarn
@@ -13,7 +19,7 @@ yarn
 npm install
 ```
 
-# Building
+## Building
 
 ```bash
 yarn start
@@ -22,7 +28,7 @@ yarn start
 npm run start
 ```
 
-# Run Tests
+## Run Tests
 
 ```bash
 yarn test
