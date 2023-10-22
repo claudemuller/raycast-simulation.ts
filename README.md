@@ -1,8 +1,17 @@
-# Vargensstein 3D
+# Raycast Simualtion
 
-A Raycasting game based off of Wolfenstein 3D written in TypeScript.
+A Raycasting simulation written in TypeScript with [p5.js](https://p5js.org/).
 
-![Vargenssten3d](vargenssten3d.png)
+![Raycast](screenshot.png)
+
+# Installing Dependencies
+
+```bash
+yarn
+
+// Or..
+npm install
+```
 
 # Building
 

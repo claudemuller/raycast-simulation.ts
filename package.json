@@ -1,7 +1,7 @@
 {
-    "name": "vargenssten",
+    "name": "raycast",
     "version": "1.0.0",
-    "description": "A Raycasting game.",
+    "description": "A Raycasting simulation in TypeScript with p5.js.",
     "source": "src/app.ts",
     "scripts": {
         "start": "parcel index.html --open",
